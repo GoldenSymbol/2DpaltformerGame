@@ -1,0 +1,85 @@
+[gd_scene load_steps=13 format=3 uid="uid://bgw6o14wp4xnw"]
+
+[ext_resource type="Script" path="res://scenes/game objects/canon.gd" id="1_mj5g3"]
+[ext_resource type="Texture2D" uid="uid://cxjasuivybnfe" path="res://assets/seashell_fire4.png" id="2_sre4g"]
+[ext_resource type="Texture2D" uid="uid://gi0c2gon3b2p" path="res://assets/seashell_fire1.png" id="3_154g7"]
+[ext_resource type="Texture2D" uid="uid://c36bminb20bp2" path="res://assets/seashell_fire2.png" id="4_gubcf"]
+[ext_resource type="Texture2D" uid="uid://li6xish8f6jr" path="res://assets/seashell_fire3.png" id="5_b2m6t"]
+[ext_resource type="Texture2D" uid="uid://6d717orfnkjx" path="res://assets/seashell_fire5.png" id="6_uohtw"]
+[ext_resource type="Texture2D" uid="uid://n0th0u3gm132" path="res://assets/seashell_fire6.png" id="7_2sfcv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_imkdr"]
+size = Vector2(83, 56)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4iub8"]
+size = Vector2(81, 53.5)
+
+[sub_resource type="Animation" id="Animation_261fp"]
+resource_name = "fire"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("3_154g7"), ExtResource("4_gubcf"), ExtResource("5_b2m6t"), ExtResource("2_sre4g"), ExtResource("6_uohtw"), ExtResource("7_2sfcv")]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"fire"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_cv8bb"]
+resource_name = "hit"
+length = 0.3
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_08uu0"]
+_data = {
+"fire": SubResource("Animation_261fp"),
+"hit": SubResource("Animation_cv8bb")
+}
+
+[node name="Canon" type="StaticBody2D"]
+script = ExtResource("1_mj5g3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(3.8147e-06, 3.8147e-06)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("7_2sfcv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2.5, 21)
+shape = SubResource("RectangleShape2D_imkdr")
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(0, 4)
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(2.5, 17.25)
+shape = SubResource("RectangleShape2D_4iub8")
+
+[node name="FirePoint" type="Marker2D" parent="."]
+position = Vector2(-46, 24)
+scale = Vector2(-1, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_08uu0")
+}
